@@ -343,7 +343,15 @@ Tests:       14 passed, 14 total
 Snapshots:   0 total
 ```
 
-### 2. ทดสอบผ่าน REST Client หรือ Postman
-- **VS Code REST Client**: เปิดไฟล์ [aniimo.http](file:///c:/Project/aniimo-topup/aniimo.http) และกด `Send Request`
-- **Postman**: นำเข้าไฟล์ [postman_collection.json](file:///c:/Project/aniimo-topup/postman_collection.json) เข้าสู่ Postman แล้วสั่งรันได้ทันที
-- **Live Interactive Web Demo**: เปิด Browser ไปที่ `http://localhost:3001/` เพื่อทดสอบระบบหน้าบ้านตาม UI ในข้อสอบหน้า 2
+### 2. ทดสอบผ่าน Web Dashboard หรือ REST Client / Postman
+- **🌐 Interactive Web Dashboard**: เปิด Browser ไปที่ **[http://localhost:3001/](http://localhost:3001/)** เพื่อทดสอบระบบหน้าบ้านตาม UI ในข้อสอบหน้า 2 (กรอก UID `412000126173`, Server 4 -> เช็คตัวละคร -> เลือกแพ็คเกจ TWD -> สร้างออเดอร์ MyCard)
+- **VS Code REST Client**: เปิดไฟล์ [`aniimo.http`](file:///c:/Project/aniimo-topup/aniimo.http) และกด `Send Request`
+- **Postman**: นำเข้าไฟล์ [`postman_collection.json`](file:///c:/Project/aniimo-topup/postman_collection.json) เข้าสู่ Postman แล้วสั่งรันได้ทันที
+
+---
+
+## 9. ข้อมูลอ้างอิงชุดข้อสอบทั้ง 4 ส่วน (Complete Suite Map)
+- **ข้อ 1 (Task A): Order Tracking API & State Machine** — `c:\Project\inback` (Port: 3000)
+- **ข้อ 2 (Task B): Aniimo Reverse Engineering & UID Top-Up** — `c:\Project\aniimo-topup` (Port: 3001)
+- **ข้อ 3 (Task C): Centralized Bot Monitoring & Control Center** — `c:\Project\oxide-bot-monitor` (Port: 3002)
+- **ข้อ 4 (Task D): AOEM BitCash Top-Up Bot & Balance Checker** — `c:\Project\aoem-bitcash-bot` (Port: 3003)
