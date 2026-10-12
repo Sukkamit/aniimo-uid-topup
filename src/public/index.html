@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aniimo Webshop - UID Top-Up (Region Taiwan / TWD / MyCard)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #059669;
+      --primary-hover: #047857;
+      --primary-light: #d1fae5;
+      --bg: #0f172a;
+      --card-bg: #1e293b;
+      --card-border: #334155;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent: #f59e0b;
+      --danger: #ef4444;
+      --success: #10b981;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Prompt', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .container {
+      max-width: 960px;
+      width: 100%;
+    }
+
+    /* Header */
+    header {
+      background: linear-gradient(135deg, #1e293b, #0f172a);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .brand h1 {
+      font-size: 24px;
+      font-weight: 700;
+      color: #38bdf8;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand p {
+      color: var(--text-muted);
+      font-size: 14px;
+      margin-top: 4px;
+    }
+
+    .region-badge {
+      background: #14532d;
+      color: #86efac;
+      padding: 8px 16px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      border: 1px solid #16a34a;
+    }
+
+    /* Comparison Banner */
+    .compare-banner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    @media (max-width: 640px) {
+      .compare-banner { grid-template-columns: 1fr; }
+    }
+
+    .banner-card {
+      padding: 16px;
+      border-radius: 12px;
+      border: 1px solid;
+    }
+
+    .banner-before {
+      background: rgba(239, 68, 68, 0.1);
+      border-color: rgba(239, 68, 68, 0.3);
+    }
+
+    .banner-after {
+      background: rgba(16, 185, 129, 0.1);
+      border-color: rgba(16, 185, 129, 0.3);
+    }
+
+    .banner-card h3 {
+      font-size: 15px;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .banner-card p {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    /* Wizard Steps */
+    .steps-container {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .step-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 24px;
+      transition: all 0.3s ease;
+    }
+
+    .step-card.active {
+      border-color: var(--primary);
+      box-shadow: 0 0 20px rgba(5, 150, 105, 0.15);
+    }
+
+    .step-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .step-number {
+      background: var(--primary);
+      color: #fff;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+    }
+
+    /* Step 1 Inputs */
+    .form-row {
+      display: grid;
+      grid-template-columns: 2fr 1fr auto;
+      gap: 12px;
+    }
+
+    @media (max-width: 640px) {
+      .form-row { grid-template-columns: 1fr; }
+    }
+
+    input, select {
+      background: #0f172a;
+      border: 1px solid var(--card-border);
+      color: var(--text);
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-size: 15px;
+      outline: none;
+      transition: border 0.2s;
+    }
+
+    input:focus, select:focus {
+      border-color: var(--primary);
+    }
+
+    button {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+    }
+
+    button:hover {
+      background: var(--primary-hover);
+    }
+
+    button:active {
+      transform: scale(0.98);
+    }
+
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    /* Step 2 Character Card */
+    .character-card {
+      background: linear-gradient(135deg, #064e3b, #0f172a);
+      border: 1px solid #10b981;
+      border-radius: 12px;
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      animation: fadeIn 0.4s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .avatar {
+      width: 64px;
+      height: 64px;
+      border-radius: 12px;
+      background: #065f46;
+      border: 2px solid #34d399;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+    }
+
+    .char-info h3 {
+      font-size: 18px;
+      color: #a7f3d0;
+    }
+
+    .char-info p {
+      font-size: 13px;
+      color: #94a3b8;
+      margin-top: 2px;
+    }
+
+    .char-badges {
+      margin-left: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 4px;
+    }
+
+    .badge-level {
+      background: #047857;
+      color: #d1fae5;
+      font-size: 12px;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-weight: 600;
+    }
+
+    /* Step 3 Packages */
+    .packages-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 12px;
+    }
+
+    .package-card {
+      background: #0f172a;
+      border: 2px solid var(--card-border);
+      border-radius: 12px;
+      padding: 16px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+
+    .package-card:hover {
+      border-color: #38bdf8;
+      transform: translateY(-2px);
+    }
+
+    .package-card.selected {
+      border-color: var(--primary);
+      background: #064e3b;
+    }
+
+    .package-badge {
+      position: absolute;
+      top: -10px;
+      right: 12px;
+      background: var(--accent);
+      color: #000;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 999px;
+    }
+
+    .package-stars {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #f1f5f9;
+    }
+
+    .package-price {
+      font-size: 18px;
+      font-weight: 700;
+      color: #34d399;
+    }
+
+    .package-orig-price {
+      font-size: 13px;
+      color: var(--text-muted);
+      text-decoration: line-through;
+      margin-left: 6px;
+    }
+
+    /* Step 4 Checkout */
+    .order-summary {
+      background: #0f172a;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+      padding: 8px 0;
+      border-bottom: 1px solid #1e293b;
+    }
+
+    .summary-row.total {
+      border-bottom: none;
+      font-size: 18px;
+      font-weight: 700;
+      color: #34d399;
+      padding-top: 12px;
+    }
+
+    /* Inspection Section */
+    .inspect-section {
+      margin-top: 32px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 24px;
+    }
+
+    pre {
+      background: #0f172a;
+      padding: 16px;
+      border-radius: 8px;
+      overflow-x: auto;
+      font-size: 12px;
+      color: #38bdf8;
+      margin-top: 12px;
+    }
+
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(4px);
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+
+    .modal-content {
+      background: var(--card-bg);
+      border: 1px solid var(--primary);
+      border-radius: 16px;
+      max-width: 480px;
+      width: 90%;
+      padding: 24px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <header>
+      <div class="brand">
+        <h1>🎮 Aniimo Webshop - UID Top-Up</h1>
+        <p>Reverse Engineered Direct UID Top-Up System (No Password Required)</p>
+      </div>
+      <div class="region-badge">
+        <span>🇹🇼 Region Taiwan</span>
+        <span>•</span>
+        <span>TWD</span>
+        <span>•</span>
+        <span>MyCard</span>
+      </div>
+    </header>
+
+    <!-- Comparison Banner -->
+    <div class="compare-banner">
+      <div class="banner-card banner-before">
+        <h3 style="color: #ef4444;">❌ Before: แบบเดิม (Via Login)</h3>
+        <p>ลูกค้าต้องให้รหัสผ่าน Hotmail + ขอ OTP เข้าอีเมล เสี่ยงโดนแฮกและเกิดคอขวด</p>
+      </div>
+      <div class="banner-card banner-after">
+        <h3 style="color: #10b981;">✅ After: ระบบใหม่ (UID Top-Up)</h3>
+        <p>เพียงกรอก UID ตรวจสอบชื่อตัวละคร เลือกแพ็ค และชำระเงินผ่าน MyCard ได้ทันที</p>
+      </div>
+    </div>
+
+    <!-- 4-Step Interactive Wizard -->
+    <div class="steps-container">
+      <!-- Step 1: Input UID -->
+      <div class="step-card active" id="step1">
+        <div class="step-title">
+          <span class="step-number">1</span>
+          <span>กรอก UID ผู้เล่น</span>
+        </div>
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px;">
+          ใส่ UID ของลูกค้า เพื่อค้นหาข้อมูลตัวละครได้ทันที (ตัวอย่างในข้อสอบ: <code>412000126173</code>)
+        </p>
+        <div class="form-row">
+          <input type="text" id="uidInput" placeholder="กรอก UID ในเกม เช่น 412000126173" value="412000126173">
+          <select id="serverSelect">
+            <option value="4">Server 4 (Taiwan-Main)</option>
+            <option value="1">Server 1 (Taiwan-Central)</option>
+            <option value="2">Server 2 (Taiwan-North)</option>
+            <option value="3">Server 3 (HongKong-MO)</option>
+          </select>
+          <button id="btnVerify" onclick="handleVerify()">ตรวจสอบตัวละคร</button>
+        </div>
+      </div>
+
+      <!-- Step 2: Character Info Card -->
+      <div class="step-card" id="step2" style="display: none;">
+        <div class="step-title">
+          <span class="step-number">2</span>
+          <span>ตรวจสอบตัวละคร</span>
+        </div>
+        <div class="character-card">
+          <div class="avatar">🐱</div>
+          <div class="char-info">
+            <h3 id="charName">Sweettoast</h3>
+            <p id="charUidServer">UID: 412000126173 • Server 4</p>
+            <p style="color: #6ee7b7; font-size: 12px; margin-top: 4px;">✓ ดึงข้อมูลตรงจาก Aniimo Webshop API สำเร็จ (โหลดเสร็จสิ้น 9 รายการ)</p>
+          </div>
+          <div class="char-badges">
+            <span class="badge-level" id="charLevel">Lv. 80</span>
+            <span style="font-size: 11px; color: #94a3b8;">Region: Taiwan</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3: Choose Package -->
+      <div class="step-card" id="step3" style="display: none;">
+        <div class="step-title">
+          <span class="step-number">3</span>
+          <span>เลือกแพ็คสินค้า (Region Taiwan / ค่าเงิน TWD)</span>
+        </div>
+        <div class="packages-grid" id="packagesGrid">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <!-- Step 4: Checkout -->
+      <div class="step-card" id="step4" style="display: none;">
+        <div class="step-title">
+          <span class="step-number">4</span>
+          <span>สร้างออเดอร์และชำระเงิน</span>
+        </div>
+        <div class="order-summary">
+          <div class="summary-row">
+            <span>ชื่อตัวละคร</span>
+            <span id="sumName" style="color: #38bdf8;">Sweettoast</span>
+          </div>
+          <div class="summary-row">
+            <span>UID / Server</span>
+            <span id="sumUidServer">412000126173 (Server 4)</span>
+          </div>
+          <div class="summary-row">
+            <span>แพ็คเกจที่เลือก</span>
+            <span id="sumPkg">300 ดาว + โบนัส 30 (ซื้อครั้งแรก +300)</span>
+          </div>
+          <div class="summary-row">
+            <span>ส่วนลดพิเศษ</span>
+            <span id="sumDiscount" style="color: #f59e0b;">- 12 TWD</span>
+          </div>
+          <div class="summary-row">
+            <span>ช่องทางชำระเงิน</span>
+            <span style="color: #a7f3d0;">MyCard Points</span>
+          </div>
+          <div class="summary-row total">
+            <span>ยอดที่ต้องจ่าย</span>
+            <span id="sumTotal">TWD 138</span>
+          </div>
+        </div>
+        <button style="width: 100%; padding: 14px; font-size: 16px;" onclick="handleCreateOrder()">
+          🚀 สร้างออเดอร์ (ไปยังหน้าชำระเงิน MyCard)
+        </button>
+      </div>
+    </div>
+
+    <!-- Reverse Engineering Packet Inspection Report -->
+    <div class="inspect-section">
+      <div class="step-title">
+        <span>🔍 Packet Inspection & Technical Details</span>
+        <button onclick="loadReport()" style="margin-left: auto; padding: 6px 12px; font-size: 12px;">โหลดข้อมูลวิเคราะห์</button>
+      </div>
+      <p style="font-size: 13px; color: var(--text-muted);">
+        สรุปโครงสร้าง Endpoint, Request Headers, Signature Algorithm และวิธีรับมือ Edge Cases
+      </p>
+      <pre id="reportPre">// กด 'โหลดข้อมูลวิเคราะห์' เพื่อดูรายละเอียดทางเทคนิค...</pre>
+    </div>
+  </div>
+
+  <!-- Success Modal -->
+  <div class="modal" id="orderModal">
+    <div class="modal-content">
+      <h2 style="color: #34d399; margin-bottom: 12px;">🎉 สร้างออเดอร์สำเร็จ!</h2>
+      <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 16px;" id="modalOrderDesc">
+        ระบบสร้าง Payment Session ผ่านเกตเวย์ MyCard เรียบร้อยแล้ว
+      </p>
+      <div style="background: #0f172a; padding: 12px; border-radius: 8px; margin-bottom: 16px; text-align: left; font-size: 13px;">
+        <p><strong>Order ID:</strong> <span id="modalOrderId" style="color: #38bdf8;"></span></p>
+        <p><strong>Trade No:</strong> <span id="modalTradeNo"></span></p>
+        <p><strong>จำนวนเงิน:</strong> <span id="modalAmount" style="color: #34d399;"></span></p>
+        <p><strong>Payment URL:</strong></p>
+        <input type="text" id="modalUrl" readonly style="width: 100%; font-size: 11px; margin-top: 4px;">
+      </div>
+      <div style="display: flex; gap: 8px;">
+        <button style="flex: 1; background: #0284c7;" onclick="window.open(document.getElementById('modalUrl').value, '_blank')">เปิดหน้า MyCard</button>
+        <button style="background: #475569;" onclick="document.getElementById('orderModal').style.display='none'">ปิด</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let selectedPackage = null;
+    let verifiedChar = null;
+    let allPackages = [];
+
+    async function handleVerify() {
+      const uid = document.getElementById('uidInput').value.trim();
+      const server = document.getElementById('serverSelect').value;
+      const btn = document.getElementById('btnVerify');
+
+      if (!uid) {
+        alert('กรุณากรอก UID');
+        return;
+      }
+
+      btn.disabled = true;
+      btn.innerText = 'กำลังตรวจสอบ...';
+
+      try {
+        const res = await fetch('/api/v1/aniimo/verify', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ uid, server })
+        });
+        const json = await res.json();
+
+        if (!json.success) {
+          alert('ผิดพลาด: ' + json.message);
+          return;
+        }
+
+        verifiedChar = json.data;
+        document.getElementById('charName').innerText = verifiedChar.role_name;
+        document.getElementById('charUidServer').innerText = `UID: ${verifiedChar.uid} • ${verifiedChar.server}`;
+        document.getElementById('charLevel').innerText = `Lv. ${verifiedChar.level}`;
+        document.getElementById('step2').style.display = 'block';
+
+        // Load Packages
+        await loadPackages();
+        document.getElementById('step3').style.display = 'block';
+      } catch (err) {
+        alert('ไม่สามารถเชื่อมต่อ API ได้: ' + err.message);
+      } finally {
+        btn.disabled = false;
+        btn.innerText = 'ตรวจสอบตัวละคร';
+      }
+    }
+
+    async function loadPackages() {
+      const res = await fetch('/api/v1/aniimo/packages');
+      const json = await res.json();
+      allPackages = json.data;
+
+      const grid = document.getElementById('packagesGrid');
+      grid.innerHTML = '';
+
+      allPackages.forEach((pkg, index) => {
+        const card = document.createElement('div');
+        card.className = 'package-card' + (index === 1 ? ' selected' : '');
+        card.innerHTML = `
+          ${pkg.badge ? `<div class="package-badge">${pkg.badge}</div>` : ''}
+          <div class="package-stars">⭐ ${pkg.name}</div>
+          <div>
+            <span class="package-price">TWD ${pkg.priceTwd}</span>
+            ${pkg.originalPriceTwd ? `<span class="package-orig-price">TWD ${pkg.originalPriceTwd}</span>` : ''}
+          </div>
+        `;
+        card.onclick = () => selectPackage(pkg, card);
+        grid.appendChild(card);
+      });
+
+      // Default select second package (PKG-300 matches PDF)
+      selectPackage(allPackages[1] || allPackages[0], grid.children[1] || grid.children[0]);
+    }
+
+    function selectPackage(pkg, cardElement) {
+      selectedPackage = pkg;
+      document.querySelectorAll('.package-card').forEach(c => c.classList.remove('selected'));
+      if (cardElement) cardElement.classList.add('selected');
+
+      document.getElementById('sumName').innerText = verifiedChar.role_name;
+      document.getElementById('sumUidServer').innerText = `${verifiedChar.uid} (${verifiedChar.server})`;
+      document.getElementById('sumPkg').innerText = pkg.name;
+      const discount = pkg.originalPriceTwd ? pkg.originalPriceTwd - pkg.priceTwd : 0;
+      document.getElementById('sumDiscount').innerText = discount > 0 ? `- ${discount} TWD` : '0 TWD';
+      document.getElementById('sumTotal').innerText = `TWD ${pkg.priceTwd}`;
+      document.getElementById('step4').style.display = 'block';
+    }
+
+    async function handleCreateOrder() {
+      if (!verifiedChar || !selectedPackage) return;
+
+      try {
+        const res = await fetch('/api/v1/aniimo/order/create', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            uid: verifiedChar.uid,
+            server: verifiedChar.server_id,
+            packageId: selectedPackage.packageId,
+            paymentChannel: 'MyCard Points'
+          })
+        });
+        const json = await res.json();
+
+        if (!json.success) {
+          alert('สร้างออเดอร์ไม่สำเร็จ: ' + json.message);
+          return;
+        }
+
+        const order = json.data;
+        document.getElementById('modalOrderId').innerText = order.orderId;
+        document.getElementById('modalTradeNo').innerText = order.tradeNo;
+        document.getElementById('modalAmount').innerText = `TWD ${order.finalAmountTwd}`;
+        document.getElementById('modalUrl').value = order.paymentUrl;
+        document.getElementById('orderModal').style.display = 'flex';
+      } catch (err) {
+        alert('เกิดข้อผิดพลาด: ' + err.message);
+      }
+    }
+
+    async function loadReport() {
+      try {
+        const res = await fetch('/api/v1/aniimo/reverse-engineering/analysis');
+        const json = await res.json();
+        document.getElementById('reportPre').innerText = JSON.stringify(json.data, null, 2);
+      } catch (err) {
+        document.getElementById('reportPre').innerText = 'ไม่สามารถโหลดข้อมูลได้: ' + err.message;
+      }
+    }
+
+    // Auto verify default UID on load for instant demo
+    window.onload = () => {
+      loadReport();
+    };
+  </script>
+</body>
+</html>

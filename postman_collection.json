@@ -1,0 +1,124 @@
+{
+  "info": {
+    "name": "Aniimo Webshop - UID Top-Up API (Taiwan TWD / MyCard)",
+    "description": "Postman Collection for Aniimo Webshop Reverse Engineering & UID Direct Top-Up Integration",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3001",
+      "type": "string"
+    },
+    {
+      "key": "orderId",
+      "value": "ORD-ANIIMO-1791780000000-123",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "1. Health & Specs",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/health"
+          }
+        },
+        {
+          "name": "Reverse Engineering Technical Analysis Report",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/aniimo/reverse-engineering/analysis"
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Server & Packages (Locked to Taiwan TWD)",
+      "item": [
+        {
+          "name": "GET Servers",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/aniimo/servers"
+          }
+        },
+        {
+          "name": "GET Packages (Region Taiwan / TWD)",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/aniimo/packages"
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Character Verification (Scope 2)",
+      "item": [
+        {
+          "name": "POST Verify Character (Sweettoast Lv. 80 Server 4)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"uid\": \"412000126173\",\n  \"server\": \"4\"\n}"
+            },
+            "url": "{{baseUrl}}/api/v1/aniimo/verify"
+          }
+        },
+        {
+          "name": "POST Verify Character (Invalid Format -> 400)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"uid\": \"INVALID_NON_NUMERIC\",\n  \"server\": \"4\"\n}"
+            },
+            "url": "{{baseUrl}}/api/v1/aniimo/verify"
+          }
+        },
+        {
+          "name": "POST Verify Character (Not Found -> 400)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"uid\": \"99999999000\",\n  \"server\": \"4\"\n}"
+            },
+            "url": "{{baseUrl}}/api/v1/aniimo/verify"
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. Order Creation & MyCard Billing Session",
+      "item": [
+        {
+          "name": "POST Create Order (300 Stars - 138 TWD MyCard)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"uid\": \"412000126173\",\n  \"server\": \"4\",\n  \"packageId\": \"PKG-300\",\n  \"paymentChannel\": \"MyCard Points\"\n}"
+            },
+            "url": "{{baseUrl}}/api/v1/aniimo/order/create"
+          }
+        },
+        {
+          "name": "GET Query Order",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/aniimo/order/{{orderId}}"
+          }
+        }
+      ]
+    }
+  ]
+}

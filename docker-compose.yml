@@ -1,0 +1,17 @@
+services:
+  aniimo-topup-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: aniimo_topup_api
+    restart: always
+    environment:
+      PORT: 3001
+      NODE_ENV: production
+      REGION: TW
+      CURRENCY: TWD
+      PAYMENT_GATEWAY: MyCard
+      RATE_LIMIT_MAX: 30
+      RATE_LIMIT_WINDOW_MS: 60000
+    ports:
+      - "3001:3001"

@@ -1,0 +1,90 @@
+### ============================================================
+### Aniimo Webshop - UID Top-Up API (Region Taiwan / TWD / MyCard)
+### Base URL: http://localhost:3001
+### ============================================================
+
+@baseUrl = http://localhost:3001
+
+### 1. Health Check
+GET {{baseUrl}}/health
+
+### 2. Get Reverse Engineering Packet Inspection Report
+GET {{baseUrl}}/api/v1/aniimo/reverse-engineering/analysis
+
+### 3. Get Game Server List
+GET {{baseUrl}}/api/v1/aniimo/servers
+
+### 4. Get Game Packages (Locked to Region Taiwan & TWD)
+GET {{baseUrl}}/api/v1/aniimo/packages
+
+### ============================================================
+### Character Name Verification (UID Top-Up)
+### ============================================================
+
+### 5. Verify Character (Valid UID from Exam - Sweettoast Lv. 80 Server 4)
+# @name verifyCharacter
+POST {{baseUrl}}/api/v1/aniimo/verify
+Content-Type: application/json
+
+{
+  "uid": "412000126173",
+  "server": "4"
+}
+
+### 6. Verify Character on Server 1
+POST {{baseUrl}}/api/v1/aniimo/verify
+Content-Type: application/json
+
+{
+  "uid": "412000126173",
+  "server": "1"
+}
+
+### 7. Verify Character - Invalid format (Non-numeric / Too short -> 400 Bad Request)
+POST {{baseUrl}}/api/v1/aniimo/verify
+Content-Type: application/json
+
+{
+  "uid": "INVALID_UID",
+  "server": "4"
+}
+
+### 8. Verify Character - Character Not Found (UID ending in 000 -> 400 Bad Request)
+POST {{baseUrl}}/api/v1/aniimo/verify
+Content-Type: application/json
+
+{
+  "uid": "99999999000",
+  "server": "4"
+}
+
+### ============================================================
+### Order Creation & MyCard Billing Session
+### ============================================================
+
+### 9. Create Top-Up Order (300 Stars Package - 138 TWD via MyCard Points)
+# @name createOrder
+POST {{baseUrl}}/api/v1/aniimo/order/create
+Content-Type: application/json
+
+{
+  "uid": "412000126173",
+  "server": "4",
+  "packageId": "PKG-300",
+  "paymentChannel": "MyCard Points"
+}
+
+### 10. Query Created Order Status
+@sampleOrderId = {{createOrder.response.body.data.orderId}}
+GET {{baseUrl}}/api/v1/aniimo/order/{{sampleOrderId}}
+
+### 11. Create Top-Up Order (Starter 60 Stars Package - 28 TWD)
+POST {{baseUrl}}/api/v1/aniimo/order/create
+Content-Type: application/json
+
+{
+  "uid": "412000126173",
+  "server": "4",
+  "packageId": "PKG-60",
+  "paymentChannel": "MyCard Points"
+}
