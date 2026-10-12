@@ -290,6 +290,31 @@ docker compose up --build
 - **API Health Check**: [http://localhost:3001/health](http://localhost:3001/health)
 
 ### วิธีที่ 2: รันแบบ Local Development
+
+#### 1. การตั้งค่า Environment Variables (`.env`)
+คัดลอกไฟล์ `.env.example` เพื่อสร้างไฟล์ `.env` สำหรับกำหนดค่าคอนฟิก:
+```bash
+# บน Linux / macOS / Git Bash
+cp .env.example .env
+
+# หรือบน Windows PowerShell
+Copy-Item .env.example .env
+```
+
+**ตารางคำอธิบายตัวแปร Environment Variables ทั้งหมด:**
+
+| ตัวแปร (Variable) | ค่าเริ่มต้น (Default) | คำอธิบาย (Description) |
+| :--- | :--- | :--- |
+| `PORT` | `3001` | พอร์ตสำหรับรัน Express API Server และ Web Demo Dashboard |
+| `NODE_ENV` | `production` | โหมดการทำงาน (`development` หรือ `production`) |
+| `REGION` | `TW` | ภูมิภาคของเกม (ล็อค Region Taiwan ตามโจทย์) |
+| `CURRENCY` | `TWD` | สกุลเงินที่ใช้ชำระเงิน (New Taiwan Dollar) |
+| `PAYMENT_GATEWAY` | `MyCard` | ผู้ให้บริการเกตเวย์รับชำระเงิน (MyCard Taiwan) |
+| `ANIIMO_SIGN_SECRET` | `aniimo_taiwan_ariel_secret_key_2026` | รหัส Secret Key สำหรับคำนวณ HMAC-SHA256 Signature |
+| `RATE_LIMIT_MAX` | `30` | จำนวน Request สูงสุดที่อนุญาตต่อหน้าต่างเวลา ป้องกัน WAF แบน |
+| `RATE_LIMIT_WINDOW_MS`| `60000` | หน้าต่างเวลา Rate Limit (60,000 ms = 1 นาที) |
+
+#### 2. การติดตั้งและรันเซิร์ฟเวอร์
 1. ติดตั้ง Dependencies:
 ```bash
 npm install
@@ -303,6 +328,7 @@ npm run dev
 npm run build
 npm start
 ```
+
 
 ---
 
