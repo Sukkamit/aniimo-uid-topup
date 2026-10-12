@@ -1,5 +1,6 @@
 import express, { Express, Request, Response, NextFunction } from 'express';
 import path from 'path';
+import fs from 'fs';
 import { aniimoController } from './controllers/aniimoController';
 import { rateLimiter } from './services/rateLimiter';
 
@@ -10,7 +11,13 @@ export function createApp(): Express {
   app.use(express.urlencoded({ extended: true }));
 
   // Serve static UI demo files
-  const publicPath = path.join(__dirname, 'public');
+  let publicPath = path.join(__dirname, 'public');
+  if (!fs.existsSync(path.join(publicPath, 'index.html'))) {
+    const srcPublic = path.join(__dirname, '../src/public');
+    if (fs.existsSync(path.join(srcPublic, 'index.html'))) {
+      publicPath = srcPublic;
+    }
+  }
   app.use(express.static(publicPath));
 
   // Health check
